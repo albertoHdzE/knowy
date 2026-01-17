@@ -1,0 +1,196 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+
+\geometry{margin=1in}
+\onehalfspacing
+
+\title{\textbf{An Agentic Multimodal Architecture for Personal Knowledge Compilation, Epistemic Evolution, and Expert-Level Reasoning}}
+\author{Alberto Espinosa}
+\date{January 16, 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Personal knowledge collections increasingly span heterogeneous sources and modalities, yet remain epistemically static, fragmented, and prone to hallucination when used in contemporary AI systems. This work proposes a rigorous agentic architecture for personal knowledge compilation and expert-level reasoning, extended with a constrained deep external research agent to support epistemic evolution over time. The system integrates advanced multimodal knowledge acquisition, including structured video analysis, a command-line interaction interface for local-first operation, and optional diagrammatic explanation generation. A principled distinction between shallow operational agents and deep epistemic agents is enforced to preserve epistemic integrity, manage uncertainty, and avoid uncontrolled knowledge drift.
+\end{abstract}
+
+\section{Motivation and Problem Statement}
+
+The central challenge addressed by this research is epistemic integrity rather than information access. Personal knowledge systems derived from saved references, academic papers, courses, and multimedia lectures are incomplete, temporally bounded, and vulnerable to hallucination when treated as closed worlds.
+
+Existing retrieval-augmented systems assume static corpora and lack mechanisms for epistemic uncertainty detection, controlled external inquiry, and structured multimodal understanding. This project reframes personal AI systems as epistemic infrastructures rather than information tools.
+
+\section{Research Objectives}
+
+\begin{enumerate}[label=\arabic*.]
+    \item Design a universal ingestion and compilation architecture for heterogeneous personal knowledge artifacts.
+    \item Construct a multi-resolution internal knowledge representation supporting expert reasoning and pedagogy.
+    \item Integrate multimodal acquisition pipelines, including explicit video-level semantic analysis.
+    \item Explicitly model epistemic boundaries to minimize hallucination.
+    \item Introduce a principled deep external research mechanism for controlled knowledge evolution.
+    \item Provide a local-first, scriptable command-line interface for interaction and system integration.
+\end{enumerate}
+
+\section{Conceptual Distinction: Shallow vs Deep Agents}
+
+\subsection{Shallow Agents}
+
+Shallow agents operate within fixed epistemic boundaries. They perform bounded transformations, do not introduce external knowledge, and do not reason under open uncertainty. These agents are responsible for ingestion, expansion, scraping, multimodal analysis, structuring, indexing, and presentation.
+
+\subsection{Deep Agents}
+
+Deep agents are permitted to cross epistemic boundaries. They formulate research-grade questions, reason under uncertainty, compare competing claims, and explicitly represent confidence and evidential strength.
+
+\textbf{Design Principle:} Only agents that cross epistemic boundaries are permitted to be deep.
+
+\section{High-Level Architecture}
+
+The system consists of layered shallow agent pipelines orchestrated via a graph-based execution framework, complemented by a single constrained deep external research agent. User interaction is mediated through a command-line interface enabling composability with other local systems.
+
+\section{Layer 0: Universal Ingestion (Shallow)}
+
+\subsection{Epistemic Question}
+\begin{quote}
+``What reference has the user saved, independent of format or source?''
+\end{quote}
+
+\subsection{Canonical Source Descriptor}
+
+\begin{verbatim}
+{
+  "source_id": "uuid",
+  "origin": "linkedin | browser | manual | other",
+  "raw_reference": "original input",
+  "raw_text": "optional extracted text",
+  "links": ["url_1", "url_2"],
+  "content_hints": {
+    "contains_pdf": false,
+    "contains_video": true,
+    "contains_external_links": true
+  },
+  "timestamp": "ISO-8601"
+}
+\end{verbatim}
+
+\section{Layer 1: Exploration and Expansion (Shallow)}
+
+\subsection{Epistemic Question}
+\begin{quote}
+\textbf{``What actual knowledge artifacts exist behind this reference?''}
+\end{quote}
+
+This agent identifies referenced papers, videos, courses, or datasets and dispatches specialized acquisition pipelines accordingly.
+
+\section{Layer 2: Knowledge Acquisition and Multimodal Scraping (Shallow)}
+
+This layer acquires primary knowledge materials and performs modality-specific extraction. For video content, the system integrates a dedicated analysis pipeline based on the open-source project \textbf{video-analyzer} (\url{https://github.com/byjlw/video-analyzer}), which provides:
+
+\begin{itemize}
+    \item Shot and scene segmentation
+    \item Transcript alignment
+    \item Visual-semantic frame extraction
+    \item Multimodal chunk generation
+\end{itemize}
+
+This pipeline transforms long-form video lectures and courses into structured knowledge units suitable for downstream representation and reasoning.
+
+\section{Layer 3: Multi-Resolution Knowledge Representation (Shallow)}
+
+Knowledge is stored explicitly at four abstraction levels:
+
+\begin{itemize}
+    \item Level 0: Raw content chunks (text, frames, transcripts)
+    \item Level 1: Section-level structured representations
+    \item Level 2: Document- or lecture-level synthesis
+    \item Level 3: Cross-document thematic synthesis
+\end{itemize}
+
+Lower levels provide factual grounding; higher levels support reasoning, comparison, and pedagogy.
+
+\section{Layer 4: Classification and Ontology Construction (Shallow)}
+
+This layer constructs topic hierarchies, prerequisite relationships, and redundancy mappings, enabling selective reasoning without exhaustive semantic search.
+
+\section{Layer 5: Expert Reasoning and Teaching (Shallow-Composite)}
+
+This agent composes explanations strictly from internal representations. It dynamically selects abstraction levels but is epistemically constrained to the compiled knowledge base.
+
+\section{Layer 6: Diagrammatic Explanation Agent (Shallow)}
+
+When requested or pedagogically beneficial, this agent generates schematic diagrams, conceptual graphs, or explanatory visuals to accompany textual explanations. It operates exclusively on internal representations and produces images as explanatory artifacts rather than sources of new knowledge.
+
+\section{Layer 7: Deep External Research Agent (Deep)}
+
+\subsection{Purpose}
+
+The Deep External Research Agent (DERA) prevents epistemic stagnation and hallucination under temporal or conceptual uncertainty.
+
+\subsection{Epistemic Question}
+\begin{quote}
+\textbf{``Does authoritative external knowledge exist that materially alters or invalidates the current internal understanding?''}
+\end{quote}
+
+\subsection{Operation}
+
+DERA is activated only under explicit trigger conditions and produces comparative epistemic reports. It annotates and versions internal knowledge but does not overwrite it. Its design is informed by the Deep Agent paradigm described in recent literature (\url{https://huggingface.co/papers/2510.21618}).
+
+\section{User Interaction Layer}
+
+User interaction is mediated through a command-line interface built upon the \texttt{llm} framework by Simon Willison (\url{https://github.com/simonw/llm}). This interface supports:
+
+\begin{itemize}
+    \item Scriptable queries and reproducible workflows
+    \item Integration with other local tools and pipelines
+    \item Multimodal output, including text and generated diagrams
+\end{itemize}
+
+The CLI is treated as a first-class architectural component rather than a peripheral interface.
+
+\section{Technology Stack}
+
+\begin{itemize}
+    \item Agent orchestration: LangGraph (\url{https://github.com/langchain-ai/langgraph})
+    \item Local model execution: Ollama (\url{https://github.com/ollama/ollama})
+    \item Text models: LLaMA 3.x (\url{https://ai.meta.com/llama/}), Qwen (\url{https://github.com/QwenLM}), Gemma (\url{https://ai.google.dev/gemma})
+    \item Multimodal models: LLaMA 3.2 Vision
+    \item Video analysis: \texttt{video-analyzer} (\url{https://github.com/byjlw/video-analyzer})
+    \item CLI interface: \texttt{llm} (\url{https://github.com/simonw/llm})
+    \item Vector storage: FAISS (\url{https://github.com/facebookresearch/faiss}) or Qdrant (\url{https://qdrant.tech})
+    \item Structured storage: relational and graph databases
+\end{itemize}
+
+\section{Project Structure}
+
+\begin{verbatim}
+project_root/
+  ingestion/
+  exploration/
+  acquisition/
+    video_analysis/
+  representation/
+  ontology/
+  reasoning/
+  diagramming/
+  deep_research/
+  interface/
+  orchestration/
+  storage/
+\end{verbatim}
+
+\section{Conclusion}
+
+By integrating explicit multimodal video analysis, diagrammatic explanation, a command-line interaction layer, and a constrained deep external research agent within a rigorously layered architecture, this system advances personal AI from retrieval-oriented tools toward a robust epistemic infrastructure. The explicit separation between shallow operational agents and deep epistemic agents preserves reliability while enabling principled knowledge evolution and expert-level pedagogy.
+
+\end{document}
